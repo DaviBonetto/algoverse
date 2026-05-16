@@ -1,0 +1,12 @@
+torch
+transformers
+accelerate
+scikit-learn
+numpy
+pandas
+matplotlib
+seaborn
+pyyaml
+tqdm
+pytest
+
