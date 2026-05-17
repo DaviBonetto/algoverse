@@ -1,0 +1,14 @@
+model_name: Qwen/Qwen2.5-1.5B-Instruct
+fallback_model_name: sshleifer/tiny-gpt2
+data_path: data/prompts_v2.jsonl
+output_dir: outputs
+reports_dir: reports
+figures_dir: figures
+pooling: last_token
+max_length: 256
+device: cuda
+dtype: auto
+cv_folds: 5
+random_seed: 42
+harmful_threshold_quantile: 0.20
+review_margin: 0.10

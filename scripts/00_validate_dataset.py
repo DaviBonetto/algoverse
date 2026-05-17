@@ -23,6 +23,8 @@ def main() -> None:
     print(f"total={len(records)}")
     print("labels=" + ", ".join(f"{k}:{v}" for k, v in sorted(summary["labels"].items())))
     print("categories=" + ", ".join(f"{k}:{v}" for k, v in sorted(summary["categories"].items())))
+    print("families=" + ", ".join(f"{k}:{v}" for k, v in sorted(summary["families"].items())))
+    print("difficulties=" + ", ".join(f"{k}:{v}" for k, v in sorted(summary["difficulties"].items())))
 
 
 if __name__ == "__main__":

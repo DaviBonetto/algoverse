@@ -9,6 +9,7 @@ from typing import Iterable
 
 VALID_LABELS = {"harmful", "benign"}
 REQUIRED_KEYS = {"id", "label", "category", "prompt"}
+OPTIONAL_KEYS = {"family", "difficulty", "pair_id", "intent_type", "source"}
 
 
 @dataclass(frozen=True)
@@ -17,6 +18,11 @@ class PromptRecord:
     label: str
     category: str
     prompt: str
+    family: str = ""
+    difficulty: str = ""
+    pair_id: str = ""
+    intent_type: str = ""
+    source: str = ""
 
     @property
     def target(self) -> int:
@@ -32,7 +38,7 @@ def _validate_row(row: dict, line_no: int) -> PromptRecord:
     if missing:
         raise DatasetValidationError(f"Line {line_no}: missing keys {sorted(missing)}")
 
-    extra = set(row) - REQUIRED_KEYS
+    extra = set(row) - REQUIRED_KEYS - OPTIONAL_KEYS
     if extra:
         raise DatasetValidationError(f"Line {line_no}: unexpected keys {sorted(extra)}")
 
@@ -50,6 +56,11 @@ def _validate_row(row: dict, line_no: int) -> PromptRecord:
         label=label,
         category=row["category"].strip(),
         prompt=row["prompt"].strip(),
+        family=str(row.get("family", row["category"])).strip(),
+        difficulty=str(row.get("difficulty", "standard")).strip(),
+        pair_id=str(row.get("pair_id", "")).strip(),
+        intent_type=str(row.get("intent_type", label)).strip(),
+        source=str(row.get("source", "curated")).strip(),
     )
 
 
@@ -91,5 +102,6 @@ def summarize_records(records: Iterable[PromptRecord]) -> dict[str, Counter]:
     return {
         "labels": Counter(record.label for record in records),
         "categories": Counter(record.category for record in records),
+        "families": Counter(record.family for record in records),
+        "difficulties": Counter(record.difficulty for record in records),
     }
-

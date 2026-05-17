@@ -127,6 +127,10 @@ def extract_hidden_states(
     labels = np.array([record.label for record in records])
     categories = np.array([record.category for record in records])
     prompts = np.array([record.prompt for record in records])
+    families = np.array([record.family for record in records])
+    difficulties = np.array([record.difficulty for record in records])
+    pair_ids = np.array([record.pair_id for record in records])
+    intent_types = np.array([record.intent_type for record in records])
     layers = np.arange(X.shape[1], dtype="int64")
 
     output_path = Path(output_path)
@@ -139,6 +143,10 @@ def extract_hidden_states(
         labels=labels,
         categories=categories,
         prompts=prompts,
+        families=families,
+        difficulties=difficulties,
+        pair_ids=pair_ids,
+        intent_types=intent_types,
         layers=layers,
         model_name=np.array(model_name),
     )
@@ -174,6 +182,10 @@ def create_synthetic_hidden_states(
         labels=np.array([record.label for record in records]),
         categories=np.array([record.category for record in records]),
         prompts=np.array([record.prompt for record in records]),
+        families=np.array([record.family for record in records]),
+        difficulties=np.array([record.difficulty for record in records]),
+        pair_ids=np.array([record.pair_id for record in records]),
+        intent_types=np.array([record.intent_type for record in records]),
         layers=np.arange(n_layers, dtype="int64"),
         model_name=np.array("synthetic-control"),
     )
