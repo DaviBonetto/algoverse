@@ -46,6 +46,38 @@ python -m pip install -r requirements.txt
 python scripts/00_validate_dataset.py --data data/prompts.jsonl --min-per-label 40
 ```
 
+## Colab / T4 Run
+
+The easiest way to produce the real Qwen results is to run the Colab notebook:
+
+```text
+notebooks/run_qwen_colab.ipynb
+```
+
+Recommended Colab setup:
+
+1. Runtime -> Change runtime type -> T4 GPU.
+2. Set `REPO_URL` in the notebook to your GitHub repo URL.
+3. Run all cells.
+4. Download `pre_refusal_qwen_results.zip`.
+5. Copy the zip contents back into this repository to update `figures/`, `reports/`, and `outputs/`.
+
+The notebook runs:
+
+```bash
+python scripts/01_extract_hidden_states.py --config configs/default.yaml --device cuda
+python scripts/02_train_layer_probes.py --states outputs/hidden_states.npz
+python scripts/03_make_figures.py --states outputs/hidden_states.npz --metrics reports/layer_probe_metrics.csv
+pytest -q
+```
+
+If a T4 hits CUDA memory limits, set these notebook values:
+
+```python
+MAX_PROMPTS = 40
+MAX_LENGTH = 256
+```
+
 For a fast end-to-end smoke test without downloading a model:
 
 ```bash
@@ -139,4 +171,3 @@ If this project is useful, cite the repository:
   url = {https://github.com/your-user/pre-refusal-signatures}
 }
 ```
-
