@@ -1,0 +1,13 @@
+{
+  "timestamp_utc": "2026-05-17T11:29:42.937435Z",
+  "model_name": "Qwen/Qwen2.5-1.5B-Instruct",
+  "device_requested": "cuda",
+  "max_prompts": 40,
+  "max_length": 256,
+  "python": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+  "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+  "torch": "2.10.0+cu128",
+  "cuda_available": true,
+  "gpu": "Tesla T4",
+  "git_commit": "ad108553c960a6b4e8edb0c13c8401d6cb7e6db5"
+}

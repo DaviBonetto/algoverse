@@ -11,3 +11,4 @@ outputs/*.pkl
 outputs/*.joblib
 outputs/probe_predictions.csv
 *.egg-info/
+APAGUE_DEPOIS/
