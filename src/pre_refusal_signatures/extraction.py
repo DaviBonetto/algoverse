@@ -79,13 +79,19 @@ def extract_hidden_states(
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype=torch_dtype,
-        trust_remote_code=True,
-        output_hidden_states=True,
-    )
-    model.to(resolved_device)
+    model_kwargs = {
+        "torch_dtype": torch_dtype,
+        "trust_remote_code": True,
+        "output_hidden_states": True,
+        "low_cpu_mem_usage": True,
+    }
+    if resolved_device == "cuda":
+        model_kwargs["device_map"] = {"": 0}
+
+    model = AutoModelForCausalLM.from_pretrained(model_name, **model_kwargs)
+    if resolved_device != "cuda":
+        model.to(resolved_device)
+    model.config.use_cache = False
     model.eval()
 
     vectors = []
@@ -106,6 +112,9 @@ def extract_hidden_states(
                 pooled = pool_last_token(hidden_state, batch["attention_mask"])
                 per_layer.append(pooled[0].detach().float().cpu().numpy())
             vectors.append(np.stack(per_layer, axis=0))
+            del outputs, batch
+            if resolved_device == "cuda":
+                torch.cuda.empty_cache()
 
     X = np.stack(vectors, axis=0).astype("float32")
     y = np.array([record.target for record in records], dtype="int64")
@@ -164,4 +173,3 @@ def create_synthetic_hidden_states(
         model_name=np.array("synthetic-control"),
     )
     return X.shape
-
