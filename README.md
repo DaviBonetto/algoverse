@@ -124,6 +124,8 @@ MAX_PROMPTS = 40
 MAX_LENGTH = 256
 ```
 
+The notebook now uses these T4-safe values by default. After a successful run, set `MAX_PROMPTS = None` and `MAX_LENGTH = 512` for the full 80-prompt extraction.
+
 ## Local Smoke Test
 
 This mode does not download Qwen. It injects a controlled synthetic signal into later layers so the full analysis pipeline can be tested quickly.

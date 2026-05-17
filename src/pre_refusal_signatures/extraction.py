@@ -28,6 +28,11 @@ def resolve_device(device: str):
 
     if device == "auto":
         return "cuda" if torch.cuda.is_available() else "cpu"
+    if device == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError(
+            "CUDA was requested but torch.cuda.is_available() is False. "
+            "On Colab, set Runtime -> Change runtime type -> T4 GPU, then restart and run all cells."
+        )
     return device
 
 
